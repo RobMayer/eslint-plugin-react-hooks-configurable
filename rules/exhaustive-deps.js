@@ -2012,13 +2012,13 @@ function parseAdditionalHooks(optionValue) {
 
 function parseAdditionalStableHooks(optionValue) {
   if (typeof optionValue === 'string') {
-    const regexp = new RegExp(optionValue);
+    const regexp = new RegExp(`${optionValue.startsWith("^") ? "" : "^"}${optionValue}${optionValue.endsWith("$") ? "" : "$"}`);
     return (name) => regexp.test(name);
   }
 
   if (typeof optionValue === 'object') {
     const regexps = Object.entries(optionValue).map(
-      ([pattern, staticParts]) => [new RegExp(pattern), staticParts],
+      ([pattern, staticParts]) => [new RegExp(`${pattern.startsWith("^") ? "" : "^"}${pattern}${pattern.endsWith("$") ? "" : "$"}`), staticParts],
     );
 
     return (name) => {
